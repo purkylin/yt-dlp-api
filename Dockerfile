@@ -10,4 +10,7 @@ RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 COPY ./app/main.py /code/
 
 
+
+ENV AUTH_TOKEN=HAWK
+
 CMD ["fastapi", "run", "main.py", "--port", "80"]
