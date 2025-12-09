@@ -1,6 +1,7 @@
 from fastapi import FastAPI, HTTPException, Depends, status, Security
 from fastapi.security import APIKeyHeader
 from pydantic import BaseModel
+from fastapi_cache.decorator import cache
 import yt_dlp
 import secrets
 import os
