@@ -1,7 +1,7 @@
 from fastapi import FastAPI, HTTPException, Depends, status, Security
 from fastapi.security import APIKeyHeader
 from pydantic import BaseModel
-from fastapi_cache.decorator import cache
+
 import yt_dlp
 import secrets
 import os
@@ -38,7 +38,6 @@ def health_check():
     return {'status': 'ok'}
 
 @app.get("/", dependencies=[Depends(get_api_key)])
-@cache(expire=7200)
 async def parse_video_info(url: str):
     try:
         ydl_opts = {
