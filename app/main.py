@@ -36,12 +36,15 @@ class DownloadRequest(BaseModel):
 def health_check():
     return {'status': 'ok'}
 
-@app.post("/info", dependencies=[Depends(get_api_key)])
-async def parse_video_info(request: DownloadRequest):
+@app.get("/", dependencies=[Depends(get_api_key)])
+@cache(expire=7200)
+async def parse_video_info(url: str):
     try:
-        ydl_opts = request.get_config()
+        ydl_opts = {
+            'noplaylist': True,
+        }
         with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-            info = ydl.extract_info(request.url, download=False)
+            info = ydl.extract_info(url, download=False)
             return info
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
